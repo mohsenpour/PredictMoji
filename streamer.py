@@ -43,7 +43,7 @@ class Listener(StreamListener):
             print(status)
             return False
 if __name__ == '__main__':
-    Fear = [u"\U0001F628",u"\U0001F630",,u"\U0001F631"]
+    Fear = [u"\U0001F628",u"\U0001F630",u"\U0001F631"]
     Anger = [u"\U0001F620",u"\U0001F621",u"\U0001F624"]
     Sadness = [u"\U0001F61E",u"\U0001F622",u"\U0001F623",u"\U0001F625",u"\U0001F62D"]
     Joy = [u"\U0001F601",u"\U0001F602",u"\U0001F603",u"\U0001F604"]
