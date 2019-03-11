@@ -11,6 +11,13 @@ def remove_word_starting_with(character,text):
     text = " ".join(filter(lambda word: word[0] != character, text.split()))
     return text
 
+def remove_word(unwanted_word, text):
+    '''
+    removes all the occurances of the word in the text
+    '''
+    text = " ".join(filter(lambda word: word != unwanted_word, text.split()))
+    return text
+
 def remove_emoji(text):
     '''
     removes all the emojis from the text
@@ -33,6 +40,7 @@ def cleanup(tweet_text):
     tweet_text = tweet_text.replace('\n', ' ')
     tweet_text = remove_word_starting_with('@',tweet_text)
     tweet_text = remove_emoji(tweet_text)
+    tweet_text = remove_word('RT', tweet_text)
     return tweet_text
 
 def tweeter_api(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET):
