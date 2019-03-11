@@ -24,7 +24,7 @@ def is_useful(tweet_text):
     '''tweet is only useful for training if it is long enough and does not contain a url address'''
     '''according to https://arxiv.org/pdf/1708.00524.pdf ,tweets containing urls 
     are noisy for emoji prediction'''
-    return (tweet_text.find('https') == -1)
+    return (tweet_text.find('https') == -1 and tweet_text.find('http') == -1)
 
 
 def cleanup(tweet_text):
