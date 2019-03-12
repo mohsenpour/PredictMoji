@@ -50,40 +50,57 @@ def tweeter_api(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET):
     api = tweepy.API(auth)
     return api
 
+def restore_index():
+    index_file = open("index.txt", "r")
+    index = int(index_file.read())
+    index_file.close()
+    return index
+
+def save_index(index):
+    index_file = open("index.txt", "w")
+    index_file.write(str(index))
+    index_file.close()
+
+MAX_LINES_EACH_TIME = 10
 if __name__ == '__main__':
     api = tweeter_api(creds2.CONSUMER_KEY,
                       creds2.CONSUMER_SECRET,
                       creds2.ACCESS_TOKEN,
                       creds2.ACCESS_TOKEN_SECRET)
+    index = restore_index()
+
+
     # open the training data file
     with open('full_train_plaintext.txt','r') as training_file:
         with open('processed.txt', 'a') as tweet_text_file:
-            i=0
-            for line in training_file:
-                if i>500:
-                    exit(0)
-                try:
-                    time.sleep(1)
-                    # get the status id from the file
-                    status_id = line.split()[0]
-                    # get the emoji labels from the file
-                    labels = (line.split()[1]).split(',')
-                    # get the tweet using twitte api
-                    tweet = api.get_status(status_id)
+            i = 0
+            for line_index,line in enumerate(training_file):
+                if i >= MAX_LINES_EACH_TIME:
+                    save_index(index)
+                    exit()
+                if line_index >= index:
+                    try:
+                        time.sleep(1)
+                        # get the status id from the file
+                        status_id = line.split()[0]
+                        # get the emoji labels from the file
+                        labels = (line.split()[1]).split(',')
+                        # get the tweet using twitte api
+                        tweet = api.get_status(status_id)
+                        print('i: ', i)
+                        i += 1
+                        index += 1
 
-                    # clean up the tweet
-                    tweet_text = cleanup(tweet.text)
-                    if is_useful(tweet_text):
-                        for label in labels:
-                            if(int(label) in interesting_labels.wanted_list):
-                                print('id: ', status_id, ' text: ', tweet_text, ' labels: ', labels)
-                                tweet_text_file.write(status_id +'\t'+ tweet_text +'\t'+ label + "\n")
-                                print('i: ', i)
-                                i+=1
-                except BaseException as e:
-                    if i>500:
-                        exit(0)
-                    print(e)
-                    print('i: ', i)
-                    i+=1
-
+                        # clean up the tweet
+                        tweet_text = cleanup(tweet.text)
+                        if is_useful(tweet_text):
+                            for label in labels:
+                                if(int(label) in interesting_labels.wanted_list):
+                                    print('id: ', status_id, ' text: ', tweet_text, ' labels: ', labels)
+                                    tweet_text_file.write(status_id +'\t'+ tweet_text +'\t'+ label + "\n")
+                    except BaseException as e:
+                        print(e)
+                        print('i: ', i)
+                        i+=1
+                        index+=1
+            save_index(index)
