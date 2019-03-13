@@ -17,6 +17,9 @@ def remove_word(unwanted_word, text):
     '''
     text = " ".join(filter(lambda word: word != unwanted_word, text.split()))
     return text
+def replace_word(original_word, new_word, text):
+    text = text.replace(original_word,new_word)
+    return text
 
 def remove_emoji(text):
     '''
@@ -41,6 +44,7 @@ def cleanup(tweet_text):
     tweet_text = remove_word_starting_with('@',tweet_text)
     tweet_text = remove_emoji(tweet_text)
     tweet_text = remove_word('RT', tweet_text)
+    tweet_text = replace_word("&amp;","&",tweet_text)
     return tweet_text
 
 def tweeter_api(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET):
@@ -61,7 +65,8 @@ def save_index(index):
     index_file.write(str(index))
     index_file.close()
 
-MAX_LINES_EACH_TIME = 10
+MAX_LINES_EACH_TIME = 15000
+
 if __name__ == '__main__':
     api = tweeter_api(creds2.CONSUMER_KEY,
                       creds2.CONSUMER_SECRET,
@@ -71,7 +76,7 @@ if __name__ == '__main__':
 
 
     # open the training data file
-    with open('full_train_plaintext.txt','r') as training_file:
+    with open('Mo.txt','r') as training_file:
         with open('processed.txt', 'a') as tweet_text_file:
             i = 0
             for line_index,line in enumerate(training_file):
@@ -99,8 +104,8 @@ if __name__ == '__main__':
                                     print('id: ', status_id, ' text: ', tweet_text, ' labels: ', labels)
                                     tweet_text_file.write(status_id +'\t'+ tweet_text +'\t'+ label + "\n")
                     except BaseException as e:
-                        print(e)
                         print('i: ', i)
+                        print(e)
                         i+=1
                         index+=1
             save_index(index)

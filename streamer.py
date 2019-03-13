@@ -49,6 +49,6 @@ if __name__ == '__main__':
     Joy = [u"\U0001F601",u"\U0001F602",u"\U0001F603",u"\U0001F604"]
     Surprise = [u"\U0001F632",u"\U0001F633",u"\U0001F62E",u"\U0001F62F"]
     keywords= Fear + Anger + Sadness + Joy + Surprise
-    where_to_save = 'tweets.txt'
+    where_to_save = 'tweets2.txt'
     streamer = TwitterStreamer()
     streamer.stream_tweets(where_to_save, keywords)
