@@ -1,13 +1,12 @@
 wanted_list = []
-wanted_list.append(77)
-wanted_list.append(78)
-for i in range(1379,1448):
-    wanted_list.append(i)
-for i in range(1616,1622):
-    wanted_list.append(i)
-wanted_list.append(1623)
-for i in range(1669,1672):
-    wanted_list.append(i)
-wanted_list.append(1678)
 
-
+Happy = [578,612,616,621,623,674,675,1099,1100,1127,1379, 1380, 1381, 1382, 1383,1384,1385,1386,1388,1389,1390,1391,1392, 1393, 1394,1403,1404,1405,1406,1407,1408,1435,1436,1437,1438,1467]
+Sad = [895,896,897,898,899,900,1106,1398,1399,1400,1409,1410,1413,1414,1416,1420,1421,1422,1424,1427,1442]
+Angry=[871,872,873,874,875,876,1121,1123,1260,1261,1387,1397,1411,1412,1423]
+Surprised=[184,830,1419,1425,1426,1429,1430,1432,1466,1468]
+Disgusted = [895,896,897,898,899,900,1127,1397,1401,1414,1415,1434,1448,1449,1450,1451,1452,1453]
+Afraid = [1419,1423,1427,1428,1430,1443]
+All = Happy + Sad + Angry + Surprised + Disgusted + Afraid
+for i in All:
+    if i not in wanted_list:
+        wanted_list.append(i)
