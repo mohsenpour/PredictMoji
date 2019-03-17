@@ -1,3 +1,6 @@
+'''
+script to split the training file into three portions for each team member use
+'''
 if __name__ == "__main__":
     line_count =0
     with open('full_train_plaintext.txt', 'r') as training_file:
