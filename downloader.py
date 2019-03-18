@@ -1,8 +1,12 @@
+'''
+file to download tweets using twitter API
+'''
 import tweepy
 import creds2
 import emoji
 import interesting_labels
 import time
+import re
 
 def remove_word_starting_with(character,text):
     '''
@@ -28,6 +32,27 @@ def remove_emoji(text):
     text = emoji.demojize(text)
     text = " ".join(filter(lambda word: (word[0] != ':' and word[-1] != ":"), text.split()))
     return text
+
+def remove_emoji_regex(text):
+    emoji_pattern = re.compile("["
+                               u"\U0001F600-\U0001F64F"  # emoticons
+                               u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+                               u"\U0001F680-\U0001F6FF"  # transport & map symbols
+                               u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
+                               u"\U00002702-\U000027B0"
+                               u"\U000024C2-\U0001F251"
+                               u"\U0001f926-\U0001f937"
+                               u'\U00010000-\U0010ffff'
+                               u"\u200d"
+                               u"\u2640-\u2642"
+                               u"\u2600-\u2B55"
+                               u"\u23cf"
+                               u"\u23e9"
+                               u"\u231a"
+                               u"\u3030"
+                               u"\ufe0f"
+                               "]+", flags=re.UNICODE)
+    return emoji_pattern.sub(r'', text)
 
 
 def is_useful(tweet_text):
@@ -65,7 +90,9 @@ def save_index(index):
     index_file.write(str(index))
     index_file.close()
 
-MAX_LINES_EACH_TIME = 15000
+MAX_LINES_EACH_TIME = 20000
+
+
 
 if __name__ == '__main__':
     api = tweeter_api(creds2.CONSUMER_KEY,
@@ -85,13 +112,14 @@ if __name__ == '__main__':
                     exit()
                 if line_index >= index:
                     try:
-                        time.sleep(1)
                         # get the status id from the file
                         status_id = line.split()[0]
                         # get the emoji labels from the file
                         labels = (line.split()[1]).split(',')
                         # get the tweet using twitte api
-                        tweet = api.get_status(status_id)
+                        if any(int(label) in interesting_labels.wanted_list for label in labels):
+                            time.sleep(1)
+                            tweet = api.get_status(status_id)
                         print('i: ', i)
                         i += 1
                         index += 1
@@ -109,3 +137,4 @@ if __name__ == '__main__':
                         i+=1
                         index+=1
             save_index(index)
+
