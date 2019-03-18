@@ -90,7 +90,7 @@ def save_index(index):
     index_file.write(str(index))
     index_file.close()
 
-MAX_LINES_EACH_TIME = 20000
+MAX_LINES_EACH_TIME = 2000000
 
 
 
@@ -116,13 +116,15 @@ if __name__ == '__main__':
                         status_id = line.split()[0]
                         # get the emoji labels from the file
                         labels = (line.split()[1]).split(',')
+                        i += 1
+                        index += 1
+                        print('i: ', i)
                         # get the tweet using twitte api
                         if any(int(label) in interesting_labels.wanted_list for label in labels):
                             time.sleep(1)
                             tweet = api.get_status(status_id)
-                        print('i: ', i)
-                        i += 1
-                        index += 1
+                        else:
+                            continue
 
                         # clean up the tweet
                         tweet_text = cleanup(tweet.text)
