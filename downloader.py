@@ -90,7 +90,7 @@ def save_index(index):
     index_file.write(str(index))
     index_file.close()
 
-MAX_LINES_EACH_TIME = 2000000
+MAX_LINES_EACH_TIME = 200000
 
 
 

@@ -38,7 +38,9 @@ def final_tweet_cleanup(tweet):
                  .replace(",", " , ") \
                  .replace(";", " ; ") \
                  .replace("?", " ? ") \
-                 .replace("\'", "")
+                 .replace("\'", "") \
+                 .replace("\"", "")
+
     return tweet.lower()
 
 if __name__ == '__main__':
