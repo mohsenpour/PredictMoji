@@ -1,5 +1,5 @@
 import pandas
-from symspellpy.symspellpy import SymSpell, Verbosity  # import the module
+from symspellpy.symspellpy import SymSpell  # import the module
 import os
 
 def get_data():
@@ -16,7 +16,7 @@ def num_in_classes(data):
 def correct_spelling( sentence ):
     # maximum edit distance per dictionary precalculation
     max_edit_distance_dictionary = 2
-    prefix_length = 7
+    prefix_length = 5
     # create object
     sym_spell = SymSpell(max_edit_distance_dictionary, prefix_length)
     # load dictionary
