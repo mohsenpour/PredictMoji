@@ -28,16 +28,18 @@ def correct_spelling( sentence ):
         print("Dictionary file not found")
         return
     if "&amp ;" in sentence:
-        sentence.replace("&amp ;", "and")
+        sentence = sentence.replace("&amp ;", "and")
     max_edit_distance_lookup = 2
     suggestions = sym_spell.lookup_compound(sentence, max_edit_distance_lookup)
     save = ""
     for suggestion in suggestions:
         save = suggestion.term
         #print("{}".format(save))
+        break;
 
-    if "#" in save:
-        save = sym_spell.word_segmentation(save)
+
+    #if "#" in save:
+    #    save = sym_spell.word_segmentation(save)
 
     return save
 
