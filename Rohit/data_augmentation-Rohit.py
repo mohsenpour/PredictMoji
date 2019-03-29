@@ -19,25 +19,21 @@ def num_in_classes(data):
     return num_classes
 
 def create_synonym_copy(tweet):
-    message = tweet.split()
-    placement = random.randint(0, len(message)-1)
+    message = tweet.split() # split into different words
+    placement = random.randint(0, len(message)-1) #choose a random word
     syns = []
     #syn = wn.synsets(message[placement]) #randomize the placement
-    for syn in wn.synsets(message[placement]):
-        for l in syn.lemmas():
-            syns.append(l.name())
+    for syn in wn.synsets(message[placement]): #for each synonyms found for the randomly chosen word
+        for l in syn.lemmas(): #find the names given
+            syns.append(l.name()) #append them
 
     #print(tweet)
     #print(set(syns))
     if len(set(syns)) > 0:
-        message[placement] = set(syns).pop()
-    else:
-        message[placement] = "." #change to something else
-    #    print(message[placement])
+        message[placement] = set(syns).pop() # take the 'best' choice synonym and replace the word
     #else:
-    #    print("ERROR")
-    #print(message)
-    #exit(0)
+        #message[placement] = "..." #need to change to something else to avoid duplicates in data
+
     return message
 
 if __name__ == '__main__':
@@ -46,6 +42,9 @@ if __name__ == '__main__':
     data_set = get_data()
     num_classes = num_in_classes(data_set)
     add_lines = []
+    # Need to first extract tweets from original file and clean up
+    # Only need the message and the final answer of which emotion the tweet belongs to
+    # Append to a new file the original tweet and the synonym tweet with the same label
     with open('cleaned_data.txt', 'r', encoding="utf8") as clean_data_file:
         with open('augmented_data.txt', 'a', encoding="utf8") as augmented_data_file:
             for line in clean_data_file:
